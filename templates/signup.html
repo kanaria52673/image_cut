@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>ユーザ登録</h1>
+<form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <p>
+    <label for="">ユーザ名</label>
+    <input type="text" name="username" placeholder="10~50文字以内">
+    </p>
+    <p>
+    <label for="">パスワード</label>
+    <input type="password" name="password" placeholder="8~25文字以内" onkeyup="ShowLength(value);"><br>
+    <a>入力文字数は</a>
+    <a id="length">0文字</a> <a>です。</a>
+    </p>
+    <p>
+    <input type="submit" value="新規登録">
+    </p>
+</form>
+<br>
+<p>注意</p>
+<p>・ユーザ名の変更はできません。</p>
+<Script>
+    function ShowLength( str ) {
+        document.getElementById("length").innerHTML = str.length + "文字";
+     }
+</Script>
+
+<p>
+    <a href="/terms_of_service" class="text-dark" role="button">利用規約</a>
+</p>
+<p>
+<a href="/login" class="text-dark" role="button">ログイン</a>
+</p>
+{% endblock %}

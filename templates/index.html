@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+    {% block content %}
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-honoka@4.3.1/dist/js/bootstrap.min.js"></script>
+    <form action="./" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <p><h2>顔が入るように画像を画面サイズへ切り取ります。</h2></p>
+
+        <p><h4>1枚ずつ処理をしたい場合はこちら。</h4></p>
+        <label for="image">画像:<input id="img" type="file" id="image" name="image" accept="image/png, image/jpeg"></label>
+        <p><h4>複数枚処理をしたい場合はこちら。</h4></p>
+        <label for="sdf">zip:<input type="file" id="sdf" name="sd" accept=".zip" /></label>
+        <br>
+        <p><h4>画像の切り取りサイズ</h4></p>
+        <p><span id="win"></span></p>
+        <label>幅：<input type="number" id="wi" name="wi1" min="50"></label>
+
+        <label>高さ：<input type="number" id="he" name="he1" min="50"></label>
+        <button id="button" type="submit">送信</button>
+        <br>
+
+    <script type="text/javascript">
+
+        
+    window_load();
+    
+    window.onresize = window_load;
+    
+    function window_load() {
+        var s_w = screen.width;
+        var s_h = screen.height;
+    
+        var s = "ウィンドウサイズ：横幅 = " + s_w + " / 高さ = " + s_h;
+        document.getElementById("win").innerHTML = s;
+    }
+    let te001 = document.getElementById('wi');
+    te001.value = screen.width;
+    let te002 = document.getElementById('he');
+    te002.value = screen.height;
+    </script>
+    
+    
+</form>
+
+
+
+<p>
+        処理を行っているため、サイトのロードに時間がかかります。<br>
+        ご了承ください。
+</p>
+
+
+{% if img_name %}
+    <div>
+            <img src="{{ url_for('static', filename=img_name) }}" style="margin-top: 10px; vertical-align: bottom; width: 400px;">
+    </div>
+{% endif %}
+
+
+{% if z_pass %}
+    <p><h4>ZIPファイルの送信後にページの読み込みが終了したら、下記リンクからDLしてくだい</h4></p>
+    <a href={{z_pass}} download="sample.zip">sample.zipをダウンロードする</a>
+{% endif %}
+<br>
+
+<a href="/logout" role="button">ログアウト</a>
+<a href="/profile/delete/" class="text-dark" role="button">アカウント削除</a>
+
+
+<p><h4>利用してほしい方</h4></p>
+<p>今ある全ての画像を背景に利用したい。<br>
+    普通に利用しても良いが、画像サイズがバラバラで顔が画面からはみ出てしまう。<br>
+    そんな時に、利用してほしいサービスです。<br>
+    家族写真や写真集などの枚数が多い画像を
+    一気に画面サイズへ切り取ることができます。</p>
+
+
+<p><h4>注意</h4></p>
+<p>・Azureなどのサービスを利用しておりますが、100％の精度が出るわけではないので、カット後の画像に顔が入らない場合があります。</p>
+<p>・サーバの設定でアップロードサイズを制限しております。現状では2~3枚の画像が含まれるZIPファイルが限度だと思われます。
+</p>
+<p>・画像をZIP化する際は、画像をフォルダに入れず、直接複数選択して、ZIP化してください</p>
+<p>・対応画像拡張子は、jpeg,png,jpgにのみ対応しております。</P>
+<p>・対応圧縮拡張子は、ZIPにのみ対応しております。</P>
+<p>・アップロードサイズが大きいとerrorになります。</p>
+<p>・拡張子がjpegの場合、動作が正常にならない場合があります。</p>
+
+<p><h4>追加開発予定</h4></p>
+<p>・サーバの移行（PHPで書ける部分を変更後、他サーバへ移行します。アップロード上限の変更）</p>
+
+
+
+{% endblock %}

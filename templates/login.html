@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>ログイン画面</h1>
+<form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <p>
+    <label for="">ユーザ名</label>
+    <input type="text" name="username" placeholder="10~50文字以内"><br>
+    <label for="">パスワード</label>
+    <input type="password" name="password" placeholder="8~25文字以内"><br>
+    <input type="submit" value="ログイン">
+    </p>
+</form>
+<p>
+<a href="/terms_of_service" class="text-dark" role="button">利用規約</a>
+</p>
+<p>
+<a href="/signup" class="text-dark" role="button">アカウント作成</a>
+</p>
+{% endblock %}
