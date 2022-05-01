@@ -128,8 +128,7 @@ def trim(im,fa_cut,w,h,f_direction):
   im_c = np.array(im)
   # サイズ比を取得
   w1,h1 = aspect_ratio(w,h)
-  left = 0
-  top = 0
+  left = top = 0
   # 画像の回転(縦画像用)
   if f_direction: 
     im_c = np.rot90(im_c, 2)
