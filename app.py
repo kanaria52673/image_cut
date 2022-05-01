@@ -47,8 +47,8 @@ class User(UserMixin, db.Model):
   password = db.Column(db.String(25),nullable=False)
 
 
-shutil.rmtree("./static/")
 IMG_DIR = "./static/"
+shutil.rmtree(IMG_DIR)
 
 BASE_DIR = os.path.dirname(__file__)
 IMG_PATH = BASE_DIR + IMG_DIR
