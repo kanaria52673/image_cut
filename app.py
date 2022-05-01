@@ -233,8 +233,8 @@ def index():
               # 画像の名前を指定(数字の連番)
               img_name = format(num,'06') + ".jpg"
                       
-              img_name = f"./static/{current_user.username}/sample/{img_name}"
-              img.save(img_name)
+              IMG_NAME = f"./static/{current_user.username}/sample/{img_name}"
+              img.save(IMG_NAME)
             except:
               print(f'error {num } 番目') 
           z_pass = f"./static/{current_user.username}/sample"
@@ -244,10 +244,6 @@ def index():
         # 単体の画像があるか確認
         if len(img_array) != 0:
             img = cv2.imdecode(img_array, 1)
-            # サーバの制限回避用
-            while img.shape[0] * img.shape[1] > 7000000:
-              img = cv2.resize(img, dsize=(img.shape[1]//50*49, img.shape[0]//50*49))
-
             num += 1
             # 画像から顔の中央値を取得
             fa_cut = faceDetectionFromPath(img,num,f_direction)
@@ -256,12 +252,12 @@ def index():
             im = trim(im,fa_cut,wi,he,f_direction)
             # 画像の名前を指定(数字の連番)
             img_name = format(num,'06') + ".jpg"
-            w = f"static/{current_user.username}/images/{img_name}"
+            W = f"static/{current_user.username}/images/{img_name}"
             im = np.array(im)
             # 画像の保存
-            cv2.imwrite(w, im)
-            img_name = f"{current_user.username}/images/{img_name}"
-    return render_template('index.html', img_name=img_name,z_pass=z_pass)
+            cv2.imwrite(W, im)
+            IMG_NAME = f"{current_user.username}/images/{img_name}"
+    return render_template('index.html', img_name=IMG_NAME,z_pass=z_pass)
 
 # アカウント作成
 @app.route('/signup', methods=['GET', 'POST'])
@@ -336,7 +332,10 @@ def profile_delete():
     shutil.rmtree(f"./static/{current_user.username}/")
     kura = User.query.filter_by(id=current_user.id).first()
     db.session.delete(kura) 
-    db.session.commit()
+    try:
+      db.session.commit()
+    except:
+      db.session.rollback()
     return redirect('/')
 
 # 利用規約
