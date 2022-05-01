@@ -185,22 +185,18 @@ def index():
         IMG_DIR = f"./static/{current_user.username}/"
         if not os.path.isdir(IMG_DIR):
             os.mkdir(IMG_DIR)
-        shutil.rmtree(f"./static/{current_user.username}/")
+        shutil.rmtree(IMG_DIR)
         if not os.path.isdir(IMG_DIR):
             os.mkdir(IMG_DIR)
-        IMG_DIR = f"./static/{current_user.username}/im/"
-        if not os.path.isdir(IMG_DIR):
-            os.mkdir(IMG_DIR)
-        IMG_DIR = f"./static/{current_user.username}/images/"
-        if not os.path.isdir(IMG_DIR):
-            os.mkdir(IMG_DIR)
-        IMG_DIR = f"./static/{current_user.username}/sample/"
-        if not os.path.isdir(IMG_DIR):
-            os.mkdir(IMG_DIR)
+        if not os.path.isdir(IMG_DIR + "im/"):
+            os.mkdir(IMG_DIR + "im/")
+        if not os.path.isdir(IMG_DIR + "images/"):
+            os.mkdir(IMG_DIR + "images/")
+        if not os.path.isdir(IMG_DIR + "sample/"):
+            os.mkdir(IMG_DIR + "sample/")
 
         # 画像の切り取りサイズを指定
         wi = int(request.form.get('wi1'))
-        
         he = int(request.form.get('he1'))
         f_direction = False
         if wi < he:
@@ -208,18 +204,14 @@ def index():
           
         num = 0
         stream = request.files['image']
-        
         img_array = np.asarray(bytearray(stream.read()), dtype=np.uint8)
-
-        st = request.files['sd'] 
+        st = request.files['sd']
         
         if st:
-          path = f"./static/{current_user.username}/im"
-          with zipfile.ZipFile(st, 'r')as f:
-                  f.extractall(path)
-                  
           BASE_DIR = Path(__file__).resolve().parent
           IMG_PATH = f"{BASE_DIR}/static/{current_user.username}/im/"
+          with zipfile.ZipFile(st, 'r')as f:
+            f.extractall(IMG_PATH)
           files = os.listdir(IMG_PATH)
           # ディレクトリトラバーサル用（意味ある？）
           files = [name.split(".")[-2:] for name in files if name.split(".")[-1] in ["png","jpg","jpeg"]]
