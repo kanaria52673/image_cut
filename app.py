@@ -213,16 +213,13 @@ def index():
           with zipfile.ZipFile(st, 'r')as f:
             f.extractall(IMG_PATH)
           files = os.listdir(IMG_PATH)
-          # ディレクトリトラバーサル用（意味ある？）
           files = [name.split(".")[-2:] for name in files if name.split(".")[-1] in ["png","jpg","jpeg"]]
           
           
           for val in files:
             try:
               num += 1
-              val = val[0] + '.' + val[1]
-                      
-              IMG_PATH_1 = IMG_PATH + val
+              IMG_PATH_1 = IMG_PATH + val[0] + '.' + val[1]
               img = Image.open(IMG_PATH_1)
               img = np.array(img)
                       
